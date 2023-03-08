@@ -68,10 +68,11 @@ void pushToStack( int newItem )
 // Removes an item from the stack but does not return the value.
 void popFromStack()
 {
-
-	if (stackSize>0)
+	#pragma omp critical
 	{
-		stackSize--;
+		if (stackSize > 0) {
+			stackSize--;
+		}
 	}
 	
 }
@@ -137,10 +138,10 @@ int main( int argc, char** argv )
 	//
 	// 2. Remove multiple items from the stack. This loop needs to be parallelised as part of the coursework.
 	//
-	
+	#pragma omp parallel for
 	for( i=1; i<=numToPop; i++ )
 	{
-		#pragma omp atomic
+		
 		popFromStack();
 	}
 
